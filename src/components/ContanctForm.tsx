@@ -1,57 +1,71 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
 import FormInput from './FormInput';
 
+import { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { yupResolver } from "@hookform/resolvers/yup";
+import { boolean, object, string } from 'yup';
+
+
+export const ContactFormSchema = object().shape({
+    email: string().email().required("Email is required"),
+    firstName: string().required("FirstName  is required"),
+    lastName: string().required("LastName  is required"),
+    speciality: string().required("Speciality  is required"),
+    country: string().required("Country  is required"),
+    region: string().required("Region  is required"),
+    phone: string().required("PhoneNumber is required"),
+    agreeToTerms: boolean().required("Please agree to terms and conditions")
+})
+
+export type TContactFormType = {
+    email: string;
+    firstName: string;
+    lastName: string;
+    speciality: string;
+    country: string;
+    region: string;
+    phone: string;
+    agreeToTerms: boolean;
+};
+
 export default function ContactForm() {
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const navigate = useNavigate();
 
-    const [formData, setFormData] = useState({
-        firstName: '',
-        lastName: '',
-        speciality: '',
-        country: 'Tanzania',
-        region: '',
-        email: '',
-        phone: '',
-        agreeToTerms: false
-    });
-
-    const [isSubmitting, setIsSubmitting] = useState(false);
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value, type, checked } = e.target;
-        setFormData(prevData => ({
-            ...prevData,
-            [name]: type === 'checkbox' ? checked : value
-        }));
-    };
-
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setIsSubmitting(true);
-
-        try {
-           
-            await new Promise(resolve => setTimeout(resolve, 1000));
-
-            console.log('Form submitted:', formData);
-            navigate('/thank-you', {
-                state: {
-                    name: formData.firstName,
-                    email: formData.email
-                }
-            });
-        } catch (error) {
-            console.error('Error submitting form:', error);
-        } finally {
-            setIsSubmitting(false);
+    const { handleSubmit, register, reset } = useForm({
+        resolver: yupResolver(ContactFormSchema),
+        defaultValues: {
+            firstName: '',
+            lastName: '',
+            speciality: '',
+            country: 'Tanzania',
+            region: '',
+            email: '',
+            phone: '',
+            agreeToTerms: false
         }
+    })
+
+    const onSubmit: SubmitHandler<TContactFormType> = (data) => {
+
+        setIsSubmitting(true);
+        navigate('/thank-you', {
+            state: {
+                name: data.firstName,
+                email: data.email
+            }
+        });
+        setIsSubmitting(false);
+        reset()
+
+
     };
 
     return (
         <div className="w-full py-16 px-4 md:px-8 bg-white">
             <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12">
- 
+
                 <div className="flex flex-col ">
                     <h2 className="text-4xl md:text-6xl font-bold mb-4 ">
                         <span className="text-slate-800 block">Join us in </span>
@@ -61,78 +75,55 @@ export default function ContactForm() {
                     </h2>
                 </div>
 
- 
+
                 <div>
-                    <form onSubmit={handleSubmit} className="space-y-6">
-     
+                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <FormInput
-                                id="firstName"
-                                name="firstName"
                                 type="text"
                                 label="First Name"
-                                value={formData.firstName}
-                                onChange={handleChange}
+                                {...register("firstName")}
                                 placeholder="First Name"
-                                required
                             />
 
                             <FormInput
-                                id="lastName"
-                                name="lastName"
                                 type="text"
                                 label="Last Name"
-                                value={formData.lastName}
-                                onChange={handleChange}
+                                {...register("lastName")}
                                 placeholder="Last Name"
-                                required
                             />
                         </div>
 
                         <FormInput
-                            id="speciality"
-                            name="speciality"
                             type="text"
                             label="Speciality"
-                            value={formData.speciality}
-                            onChange={handleChange}
+                            {...register("speciality")}
                             placeholder="Speciality"
-                            required
                             fullWidth
                         />
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <FormInput
-                                id="country"
-                                name="country"
                                 type="text"
                                 label="Country"
-                                value={formData.country}
-                                onChange={handleChange}
+                                {...register("country")}
                                 placeholder="Country"
-                                required
                             />
 
                             <FormInput
-                                id="region"
-                                name="region"
                                 type="text"
                                 label="Region / State"
-                                value={formData.region}
-                                onChange={handleChange}
+                                {...register("region")}
                                 placeholder="Region / State"
                             />
                         </div>
 
                         <FormInput
-                            id="email"
-                            name="email"
                             type="email"
                             label="Email address"
-                            value={formData.email}
-                            onChange={handleChange}
+                            {...register("email")}
                             placeholder="email@address.com"
-                            required
                             fullWidth
                         />
 
@@ -150,13 +141,9 @@ export default function ContactForm() {
                                 </div>
                                 <input
                                     type="tel"
-                                    id="phone"
-                                    name="phone"
-                                    value={formData.phone}
-                                    onChange={handleChange}
+                                    {...register("phone")}
                                     className="flex-1 px-4 py-3 rounded-r-md bg-stone-100 border-0 focus:ring-2 focus:ring-indigo-500"
                                     placeholder="Phone number"
-                                    required
                                 />
                             </div>
                         </div>
@@ -165,12 +152,8 @@ export default function ContactForm() {
                             <div className="flex items-start">
                                 <input
                                     type="checkbox"
-                                    id="agreeToTerms"
-                                    name="agreeToTerms"
-                                    checked={formData.agreeToTerms}
-                                    onChange={handleChange}
+                                    {...register("agreeToTerms")}
                                     className="h-5 w-5 mt-1 text-indigo-600 focus:ring-indigo-500 rounded"
-                                    required
                                 />
                                 <label htmlFor="agreeToTerms" className="ml-3 text-sm text-gray-600">
                                     By using this product, you acknowledge and agree to abide by the{' '}
@@ -182,13 +165,12 @@ export default function ContactForm() {
                             </div>
                         </div>
 
-
                         <button
                             type="submit"
-                            disabled={isSubmitting}
+                            // disabled={isSubmitting}
                             className={`w-full font-medium py-3 px-4 rounded-lg transition-colors ${isSubmitting
-                                    ? 'bg-indigo-300 cursor-not-allowed'
-                                    : 'bg-indigo-500 hover:bg-indigo-600 text-white'
+                                ? 'bg-indigo-300 cursor-not-allowed'
+                                : 'bg-gradient-to-r from-[#0A9964] via-purple-400 to-pink-500'
                                 }`}
                         >
                             {isSubmitting ? 'Submitting...' : 'Submit'}

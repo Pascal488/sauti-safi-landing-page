@@ -60,7 +60,7 @@ export default function ClinicalAssistant() {
                                 {feature.icon}
                             </div>
                             <h3 className="text-xl font-semibold text-white mb-4">{feature.title}</h3>
-                            <p className="text-gray-300">{feature.description}</p>
+                            <p className="text-gray-300 text-center">{feature.description}</p>
                         </div>
                     ))}
                 </div>

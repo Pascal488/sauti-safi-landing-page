@@ -1,16 +1,19 @@
 import React from 'react';
+import { UseFormRegisterReturn } from 'react-hook-form';
 
-interface FormInputProps {
-    id: string;
-    name: string;
+export type FormInputProps = React.ComponentProps<"input"> &  {
+    id?: string;
+    name?: string;
     type: string;
     label: string;
-    value: string;
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    value?: string;
+    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
     placeholder?: string;
     required?: boolean;
     className?: string;
     fullWidth?: boolean;
+    register?: UseFormRegisterReturn;
+
 }
 
 const FormInput: React.FC<FormInputProps> = ({
@@ -23,7 +26,9 @@ const FormInput: React.FC<FormInputProps> = ({
     placeholder,
     required = false,
     className = '',
-    fullWidth = false
+    fullWidth = false,
+    register,
+    ...extra
 }) => {
     return (
         <div className={fullWidth ? 'w-full' : className}>
@@ -39,6 +44,8 @@ const FormInput: React.FC<FormInputProps> = ({
                 className="w-full px-4 py-3 rounded-md bg-stone-100 border-0 focus:ring-2 focus:ring-indigo-500"
                 placeholder={placeholder}
                 required={required}
+                {...register} 
+                {...extra}
             />
         </div>
     );
