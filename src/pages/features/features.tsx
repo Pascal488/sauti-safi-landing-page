@@ -1,6 +1,6 @@
 import InteractiveFeatureCards from "../../components/InteractiveFeatureCard";
 import FeaturesCardMobile from "../../components/FeatureCardMobile";
-import FeaturesTabComponent from "./FeaturesLayout";
+import FeaturesLayout from "../features/featuresLayout";
 
 export default function SautiSafiFeatures() {
     return (
@@ -25,7 +25,7 @@ export default function SautiSafiFeatures() {
             </div>
                
             <div className="md:p-10">
-                <FeaturesTabComponent />
+                <FeaturesLayout />
             </div>
         </div>
     );

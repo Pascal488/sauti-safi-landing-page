@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 import Logo from "../assets/LogoNew.svg";
 
 export default function Footer () {
@@ -15,40 +15,40 @@ export default function Footer () {
                     <nav className="flex flex-col md:flex-row justify-center mb-6 md:mb-0">
                         <ul className="flex flex-col md:flex-row space-y-4 md:space-x-8 md:space-y-0">
                             <li>
-                                <Link to="/" className="text-gray-700 hover:text-emerald-600 transition-colors">
+                                <a href="/" className="text-gray-700 hover:text-emerald-600 transition-colors">
                                     Home
-                                </Link>
+                                </a>
                             </li>
                             <li>
-                                <Link to="/about" className="text-gray-700 hover:text-emerald-600 transition-colors">
+                                <a href="/#about" className="text-gray-700 hover:text-emerald-600 transition-colors">
                                     About
-                                </Link>
+                                </a>
                             </li>
                             <li>
-                                <Link to="/features" className="text-gray-700 hover:text-emerald-600 transition-colors">
+                                <a href="/#features" className="text-gray-700 hover:text-emerald-600 transition-colors">
                                     Features
+                                </a>
+                            </li>
+                            <li>
+                                <Link to="/research" className="text-gray-700 hover:text-emerald-600 transition-colors">
+                                    Research
                                 </Link>
                             </li>
                             <li>
-                                <Link to="/integrity" className="text-gray-700 hover:text-emerald-600 transition-colors">
-                                    Integrity
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to="/contacts" className="text-gray-700 hover:text-emerald-600 transition-colors">
+                                <a href="/#contacts" className="text-gray-700 hover:text-emerald-600 transition-colors">
                                     Contacts
-                                </Link>
+                                </a>
                             </li>
                         </ul>
                     </nav>
 
                     <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-6">
-                        <Link to="/terms" className="text-gray-600 hover:text-emerald-600 text-sm transition-colors">
+                        <a href="/terms" className="text-gray-600 hover:text-emerald-600 text-sm transition-colors">
                             Terms of Use
-                        </Link>
-                        <Link to="/privacy" className="text-gray-600 hover:text-emerald-600 text-sm transition-colors">
+                        </a>
+                        <a href="/privacy" className="text-gray-600 hover:text-emerald-600 text-sm transition-colors">
                             Privacy Policy
-                        </Link>
+                        </a>
                     </div>
                 </div>
             </div>

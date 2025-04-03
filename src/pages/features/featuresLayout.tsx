@@ -1,46 +1,52 @@
 import { useState } from 'react';
+import TrancribeImage from "../../assets/TranscribeImage.svg"
+import DocumentationImage from "../../assets/Documentation.svg"
+import SuggestionsImage from "../../assets/SuggestionsImage.svg"
+import NotesImage from "../../assets/Notes.svg"
+import MedicalImage from "../../assets/MedicalImage.svg"
+import AIImage from "../../assets/AIImage.svg"
 
 const featureTabsData = [
     {
         id: "Transcribe",
         title: "Voith listens, transcribes your consults, then generates precise medical notes in SOAP format for you.",
         description: "Voith listens, transcribes your consults, then generates precise medical notes in SOAP format for you.",
-        imageSrc: "IMAGEHERE",
+        imageSrc: TrancribeImage,
         imageAlt: "Medical interface showing transcription"
     },
     {
         id: "Documentation",
         title: "Comprehensive documentation at your fingertips",
         description: "Our AI captures every clinical detail and organizes it into professional documentation that meets regulatory standards while maintaining the human touch in your practice.",
-        imageSrc: "IMAGEHERE",
+        imageSrc: DocumentationImage,
         imageAlt: "Documentation interface"
     },
     {
         id: "Suggestions",
         title: "Smart clinical suggestions and decision support",
         description: "Get intelligent diagnostic and treatment suggestions based on patient history and current presentation, helping you deliver evidence-based care with confidence.",
-        imageSrc: "IMAGEHERE",
+        imageSrc: SuggestionsImage,
         imageAlt: "Suggestions interface"
     },
     {
         id: "Notes",
         title: "Efficient clinical note-taking",
         description: "Access your complete patient documentation library anytime, anywhere, securely",
-        imageSrc: "IMAGEHERE",
+        imageSrc: NotesImage,
         imageAlt: "Notes interface"
     },
     {
         id: "Medical Codes",
         title: "Automatic medical coding",
         description: "Automatically identify and apply appropriate ICD-10 and CPT codes to maximize reimbursement accuracy and streamline your workflow.",
-        imageSrc: "IMAGEHERE",
+        imageSrc: MedicalImage,
         imageAlt: "Medical Codes interface"
     },
     {
         id: "AI Assistant",
         title: "Intelligent AI medical assistant",
         description: "Your dedicated medical AI assistant works alongside you, handling documentation while you focus on what matters most—your patients.",
-        imageSrc: "IMAGEHERE",
+        imageSrc: AIImage,
         imageAlt: "AI Assistant interface"
     }
 ];
@@ -58,13 +64,13 @@ const FeatureContent = ({ content }:any) => (
             </div>
         </div>
         <div className="mt-10">
-            <h2 className="text-2xl font-semibold mb-4">{content.title}</h2>
-            <p className="text-gray-600">{content.description}</p>
+            <h2 className="text-2xl font-semibold mb-4 ">{content.title}</h2>
+            <p className="text-[#4D4D4D] max-w-[500px]">{content.description}</p>
         </div>
     </div>
 );
 
-export default function FeaturesTabComponent() {
+export default function FeaturesLayout() {
     const [activeTab, setActiveTab] = useState(featureTabsData[0].id);
 
     const activeContent = featureTabsData.find(tab => tab.id === activeTab);
