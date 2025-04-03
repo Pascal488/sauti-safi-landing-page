@@ -1,13 +1,11 @@
 import { useEffect, useState } from "react";
-import LaptopImage from "../assets/LaptopImage.svg";
+import LaptopImage from "../assets/Transpict.svg";
 
 export default function HeroSection() {
-
     const [isVisible, setIsVisible] = useState(false);
     const [secondTitleVisible, setSecondTitleVisible] = useState(false);
 
     useEffect(() => {
-
         const timer = setTimeout(() => {
             setIsVisible(true);
         }, 300);
@@ -52,16 +50,22 @@ export default function HeroSection() {
                     className={`mt-5 text-center mb-5 transition-all duration-1000 ease-out delay-500 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
                         }`}
                 >
-                    <button className=" animate-bounce border-[#6D63FF] border-4 bg-white text-[#6D63FF] rounded-full px-20 py-2.5 cursor-pointer hover:bg-[#6D63FF] hover:text-white hover:cursor-pointer transition-all duration-300">
+                    <button className="animate-bounce border-[#6D63FF] border-4 bg-white text-[#6D63FF] rounded-full px-20 py-2.5 cursor-pointer hover:bg-[#6D63FF] hover:text-white hover:cursor-pointer transition-all duration-300">
                         Try for free
                     </button>
                 </div>
             </div>
             <div
-                className={`bg-gradient-to-t from-[#FFFFFF00] to-[#E8E3D5] w-full text-center h-full flex justify-center p-5 transition-all duration-1500 ease-out delay-700 ${isVisible ? "opacity-100 scale-100" : "opacity-0 scale-95"
+                className={`w-full text-center h-full flex justify-center p-5 transition-all duration-1500 ease-out delay-700 ${isVisible ? "opacity-100 scale-100" : "opacity-0 scale-95"
                     }`}
             >
-                <img src={LaptopImage} alt="Laptop showing SautiSafi interface" className="self-center" />
+                <div className="relative">
+                    <div className="absolute inset-0 -top-10 -left-10 -right-10 -bottom-5 bg-purple-400/35 rounded-full blur-3xl "></div>
+                    <div className="relative z-10 rounded-[40px] overflow-hidden shadow-lg " style={{ border: '5px solid rgba(209, 213, 219, 0.3)' }}>
+                        <img src={LaptopImage} alt="Laptop showing SautiSafi interface" className="self-center w-full" />
+                    </div>
+
+                </div>
             </div>
             <div className="text-center mt-10 p-10 max-w-[500px] mx-auto">
                 <div

@@ -1,55 +1,37 @@
-import { Route, Routes } from "react-router-dom"
+import { Outlet, useRoutes } from "react-router-dom"
 
-import Benefits from "./components/Benefits"
-import Header from "./components/Header"
-import HeroSection from "./components/HeroSection"
-import SautiSafiFeatures from "./components/Features"
-import ClinicalAssistant from "./components/ClinicalAssitans"
-import IntegrityTimeline from "./components/TimeLine"
-import HealthcareHero from "./components/HealthCareHero"
-import ContactForm from "./components/ContanctForm"
-import Footer from "./components/Footer"
-import ThankYouPage from "./components/ThankYouPage"
+import ResearchRoutes from "./pages/research/research-routes"
+import AppLayout from "./layout"
+import Homepage from "./pages/home-page"
+import ThankYouPage from "./components/ThankYouPage";
+
+
+const AppRoutes = () => {
+  return useRoutes([
+    {
+      path: "/",
+      element: <AppLayout />,
+      children: [
+        ...ResearchRoutes,
+        {
+          index: true,
+          element: <Homepage />
+        },
+        {
+          path: "thank-you",
+          element: <ThankYouPage />
+        }
+
+      ]
+    }
+  ]);
+};
 
 function App() {
   return (
     <>
-      <Routes>
-        <Route path="/thank-you" element={<ThankYouPage />} />
-      </Routes>
-      <div className="flex flex-col gap-10 p-5 md:p-0">
-        <Header />
-
-        <section id="hero">
-          <HeroSection />
-        </section>
-
-        <section id="benefits">
-          <Benefits />
-        </section>
-
-        <section id="features">
-          <SautiSafiFeatures />
-        </section>
-
-        <section id="clinical">
-          <ClinicalAssistant />
-        </section>
-
-        <section id="integrity">
-          <IntegrityTimeline />
-        </section>
-
-        <section id="healthcare">
-          <HealthcareHero />
-        </section>
-
-        <section id="contact">
-          <ContactForm />
-        </section>
-
-        <Footer />
-      </div>
+      <AppRoutes />
+      <Outlet />
     </>
   )
 }

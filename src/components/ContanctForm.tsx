@@ -1,4 +1,6 @@
 import FormInput from './FormInput';
+import EmailIcon from "../assets/EmailIcon.svg"
+import CallUsIcon from "../assets/CallUsIcon.svg"
 
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
@@ -66,17 +68,41 @@ export default function ContactForm() {
         <div className="w-full py-16 px-4 md:px-8 bg-white">
             <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12">
 
-                <div className="flex flex-col ">
+                <div className="flex flex-col  gap-5">
                     <h2 className="text-4xl md:text-6xl font-bold mb-4 ">
                         <span className="text-slate-800 block">Join us in </span>
                         <span className="text-indigo-600">transforming</span>
                         <br />
                         <span className="text-indigo-500">healthcare</span>
                     </h2>
+                    <p>
+                        Have a question or want to work together?
+                        Drop us a message and we will get back to you as soon as possible.
+                    </p>
+                    <div className='bg-[#F8F5EF66] flex   gap-5 p-5 w-[55%]  rounded-2xl'>
+                        <div className='flex justify-center bg-[#6D63FF1A] rounded-full h-12 w-12'>
+                                <img src={EmailIcon} alt=""  className=' self-center'/>
+                        </div>
+
+                        <div className='flex flex-col justify-between'>
+                            <span>Email</span>
+                            <span>office@voith.ai</span>
+                        </div>
+                    </div>
+                    <div className='bg-[#F8F5EF66] flex  gap-5 w-[55%] p-5 rounded-2xl'>
+                        <div className='flex justify-center bg-[#6D63FF1A] rounded-full h-12 w-12'>
+                                <img src={CallUsIcon} alt=""  className=' self-center'/>
+                        </div>
+
+                        <div className='flex flex-col justify-between'>
+                            <span>Call Us</span>
+                            <span>+44 7398 362552</span>
+                        </div>
+                    </div>
                 </div>
 
 
-                <div>
+                <div className='p-8   rounded-2xl shadow-[-5px_18px_55px_45px_rgba(0,_0,_0,_0.1)]'>
                     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
