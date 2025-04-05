@@ -2,7 +2,7 @@ import InteractiveFeatureCards from "../../components/InteractiveFeatureCard";
 import FeaturesCardMobile from "../../components/FeatureCardMobile";
 import FeaturesLayout from "../features/featuresLayout";
 
-export default function SautiSafiFeatures() {
+export default function VoithAIFeatures() {
     return (
         <div className="md:p-10">
             <div className="md:block hidden">

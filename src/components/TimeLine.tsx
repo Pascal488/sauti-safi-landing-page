@@ -1,9 +1,12 @@
-const features = [
+import { useStrapiData } from "../contexts/StrapiContext";
+
+// Fallback data
+const fallbackFeatures = [
     {
         id: 1,
         number: "1",
         title: "Safety",
-        description: "At SautiSafi, we have commitments to ensure Trustworthy AI and are building industry-leading supporting technology."
+        description: "At VoithAI, we have commitments to ensure Trustworthy AI and are building industry-leading supporting technology."
     },
     {
         id: 2,
@@ -20,8 +23,31 @@ const features = [
 ];
 
 export default function IntegrityTimeline() {
+    const { timeline, loading, error } = useStrapiData();
+    
+    // Use data from Strapi if available, otherwise use fallback
+    const features = timeline?.data?.length
+        ? timeline.data.map((item, index) => ({
+            id: item.id,
+            number: item.attributes.number || (index + 1).toString(),
+            title: item.attributes.title,
+            description: item.attributes.description
+          }))
+        : fallbackFeatures;
+        
+    // Show loading state (could be a skeleton)
+    if (loading) {
+        return <div className="flex justify-center items-center h-[60vh]">Loading timeline...</div>;
+    }
+
+    // If there's an error, still render with fallback data
+    if (error) {
+        console.error("Error loading timeline data:", error);
+        // Continue with fallback data
+    }
+    
     return (
-        <div className="w-full  px-8 py-16">
+        <div className="w-full px-8 py-16">
             <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12">
              
                 <div className="pr-8">

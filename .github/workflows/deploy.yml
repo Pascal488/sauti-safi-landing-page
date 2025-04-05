@@ -1,0 +1,102 @@
+name: Deploy VoithAI with Strapi to EC2
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Setup Strapi if not exists
+      run: |
+        if [ ! -d "strapi" ]; then
+          npm run setup:strapi
+        fi
+    
+    - name: Build frontend
+      run: npm run build:frontend
+      
+    - name: Build Strapi
+      run: |
+        if [ -d "strapi" ]; then
+          cd strapi && npm run build
+        fi
+    
+    - name: Install SSH key
+      uses: shimataro/ssh-key-action@v2
+      with:
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        known_hosts: ${{ secrets.KNOWN_HOSTS }}
+    
+    - name: Deploy frontend to EC2
+      run: |
+        rsync -avz --delete dist/ ${{ secrets.SSH_USER }}@${{ secrets.EC2_HOST }}:/var/www/html/
+    
+    - name: Deploy Strapi to EC2
+      run: |
+        if [ -d "strapi" ]; then
+          rsync -avz --delete strapi/ ${{ secrets.SSH_USER }}@${{ secrets.EC2_HOST }}:/var/www/strapi/ --exclude=node_modules --exclude=.env
+          ssh ${{ secrets.SSH_USER }}@${{ secrets.EC2_HOST }} 'cd /var/www/strapi && npm install --production'
+        fi
+    
+    - name: Setup Strapi environment on EC2
+      run: |
+        ssh ${{ secrets.SSH_USER }}@${{ secrets.EC2_HOST }} 'if [ ! -f "/var/www/strapi/.env" ]; then
+          echo "HOST=0.0.0.0" > /var/www/strapi/.env
+          echo "PORT=1337" >> /var/www/strapi/.env
+          echo "APP_KEYS=${{ secrets.STRAPI_APP_KEYS }}" >> /var/www/strapi/.env
+          echo "API_TOKEN_SALT=${{ secrets.STRAPI_API_TOKEN_SALT }}" >> /var/www/strapi/.env
+          echo "ADMIN_JWT_SECRET=${{ secrets.STRAPI_ADMIN_JWT_SECRET }}" >> /var/www/strapi/.env
+          echo "JWT_SECRET=${{ secrets.STRAPI_JWT_SECRET }}" >> /var/www/strapi/.env
+          echo "DATABASE_FILENAME=.tmp/data.db" >> /var/www/strapi/.env
+        fi'
+    
+    - name: Setup PM2 for Strapi and restart services
+      run: |
+        ssh ${{ secrets.SSH_USER }}@${{ secrets.EC2_HOST }} '
+        # Install PM2 if not installed
+        if ! command -v pm2 &> /dev/null; then
+          sudo npm install -g pm2
+        fi
+        
+        # Setup PM2 config
+        cd /var/www/strapi
+        pm2 ecosystem || true
+        
+        cat > ecosystem.config.js << EOL
+        module.exports = {
+          apps: [{
+            name: "strapi",
+            cwd: "/var/www/strapi",
+            script: "npm",
+            args: "run start",
+            env: {
+              NODE_ENV: "production",
+            }
+          }]
+        }
+        EOL
+        
+        # Restart Strapi with PM2
+        pm2 restart ecosystem.config.js || pm2 start ecosystem.config.js
+        
+        # Setup PM2 to start on system reboot
+        pm2 save
+        sudo env PATH=$PATH:/usr/bin pm2 startup systemd -u $USER --hp /home/$USER
+        
+        # Restart Nginx
+        sudo systemctl restart nginx || true
+        '

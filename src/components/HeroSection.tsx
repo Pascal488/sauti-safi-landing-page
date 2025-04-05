@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import LaptopImage from "../assets/Transpict.svg";
+import { useStrapiData } from "../contexts/StrapiContext";
 
 export default function HeroSection() {
     const [isVisible, setIsVisible] = useState(false);
     const [secondTitleVisible, setSecondTitleVisible] = useState(false);
+    const { heroContent, loading, error } = useStrapiData();
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -25,6 +27,29 @@ export default function HeroSection() {
         };
     }, []);
 
+    // Fallback content if data is loading or there's an error
+    const title = heroContent?.data?.attributes?.title || "Transform how Clinicians work";
+    const subtitle = heroContent?.data?.attributes?.subtitle || "VoithAI is an AI intake solution for healthcare. VoithAI listens to patients, gathers their history, and summarizes the information for you. Physicians can see more patients, enhance care quality, and save time on documentation.";
+    const buttonText = heroContent?.data?.attributes?.buttonText || "Try for free";
+    
+    // Use Strapi image URL if available, otherwise fallback to local image
+    const imageSrc = heroContent?.data?.attributes?.mainImage?.data?.attributes?.url 
+        ? `${import.meta.env.VITE_STRAPI_MEDIA_URL}${heroContent.data.attributes.mainImage.data.attributes.url}` 
+        : LaptopImage;
+    
+    const imageAlt = heroContent?.data?.attributes?.mainImage?.data?.attributes?.alternativeText || "Laptop showing VoithAI interface";
+
+    // Show loading state
+    if (loading) {
+        return <div className="flex justify-center items-center h-[60vh]">Loading...</div>;
+    }
+
+    // Show error state
+    if (error) {
+        console.error("Error loading hero content:", error);
+        // Continue with fallback content
+    }
+
     return (
         <section className="">
             <div>
@@ -33,7 +58,7 @@ export default function HeroSection() {
                         }`}
                 >
                     <h1 className="text-center bg-gradient-to-r from-[#141619] to-[#6D63FF] font-extrabold text-7xl bg-clip-text text-transparent">
-                        Transform how Clinicians work
+                        {title}
                     </h1>
                 </div>
                 <div
@@ -41,9 +66,7 @@ export default function HeroSection() {
                         }`}
                 >
                     <p className="text-center text-[#4D4D4D]">
-                        SautiSafi is an AI intake solution for healthcare. SautiSafi listens to patients,
-                        gathers their history, and summarizes the information for you.
-                        Physicians can see more patients, enhance care quality, and save time on documentation.
+                        {subtitle}
                     </p>
                 </div>
                 <div
@@ -51,7 +74,7 @@ export default function HeroSection() {
                         }`}
                 >
                     <button className="animate-bounce border-[#6D63FF] border-4 bg-white text-[#6D63FF] rounded-full px-20 py-2.5 cursor-pointer hover:bg-[#6D63FF] hover:text-white hover:cursor-pointer transition-all duration-300">
-                        Try for free
+                        {buttonText}
                     </button>
                 </div>
             </div>
@@ -62,7 +85,7 @@ export default function HeroSection() {
                 <div className="relative">
                     <div className="absolute inset-0 -top-10 -left-10 -right-10 -bottom-5 bg-purple-400/35 rounded-full blur-3xl "></div>
                     <div className="relative z-10 rounded-[40px] overflow-hidden shadow-lg " style={{ border: '5px solid rgba(209, 213, 219, 0.3)' }}>
-                        <img src={LaptopImage} alt="Laptop showing SautiSafi interface" className="self-center w-full" />
+                        <img src={imageSrc} alt={imageAlt} className="self-center w-full" />
                     </div>
 
                 </div>
@@ -81,7 +104,7 @@ export default function HeroSection() {
                         }`}
                 >
                     <p>
-                        Help clinicians save time and achieve more with less effort so they can focus on what matters most with SautiSafi AI solution.
+                        Help clinicians save time and achieve more with less effort so they can focus on what matters most with VoithAI AI solution.
                     </p>
                 </div>
             </div>

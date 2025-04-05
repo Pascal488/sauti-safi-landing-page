@@ -137,7 +137,7 @@ export default function Header() {
         <div className="md:flex md:justify-between w-full p-16 sticky top-0 backdrop-blur-sm z-50">
             <div className="flex items-center justify-between w-full md:w-auto">
                 <Link to="/">
-                    <img src={Logo} alt="SautiSafi Logo" className="w-32" />
+                    <img src={Logo} alt="VoithAI Logo" className="w-32" />
                 </Link>
                 <button
                     className="md:hidden text-2xl"

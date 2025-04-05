@@ -2,7 +2,7 @@ import HeroSection from "../components/HeroSection";
 import Benefits from "../components/Benefits";
 import ClinicalAssistant from "../components/ClinicalAssitans";
 import ContactForm from "../components/ContanctForm";
-import SautiSafiFeatures from "./features/features";
+import VoithAIFeatures from "./features/features";
 import HealthcareHero from "../components/HealthCareHero";
 import IntegrityTimeline from "../components/TimeLine";
 
@@ -21,7 +21,7 @@ export default function Homepage() {
             </section>
 
             <section id="features">
-                <SautiSafiFeatures />
+                <VoithAIFeatures />
             </section>
 
             <section id="clinical">

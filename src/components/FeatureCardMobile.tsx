@@ -63,9 +63,9 @@ export default function FeaturesCardMobile() {
     return (
         <div className="w-full bg-slate-900 p-8 rounded-3xl">
             <div className="mb-8">
-                <h2 className="text-4xl font-bold text-white mb-4">SautiSafi AI</h2>
+                <h2 className="text-4xl font-bold text-white mb-4">VoithAI</h2>
                 <p className="text-white text-lg max-w-2xl">
-                    SautiSafi automates patient history-taking, charting, and documentation, helping you deliver high-quality care faster.
+                    VoithAI automates patient history-taking, charting, and documentation, helping you deliver high-quality care faster.
                 </p>
             </div>
 
